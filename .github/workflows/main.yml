@@ -1,23 +1,30 @@
-name: Build Docker Image
+name: CI/CD
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
 
 env:
-  ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+  ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
+
+env:
+  IMAGE_NAME: my-image-repository/my-image
+  IMAGE_TAG: 1.0.0
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Build Docker Image
+    - name: Set up Docker
+      uses: docker/setup-docker@v2
+
+    - name: Build and push Docker image
       uses: docker/build-push-action@v2
       with:
         context: .
         push: true
-        tags: my-image-repository/my-image:${{ env.GITHUB_SHA }}
+        tags: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
