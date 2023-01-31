@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
 
+env:
+  ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -11,9 +14,6 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
-    - name: Set Environment Variable
-      run: echo "::set-env name=ACTIONS_ALLOW_UNSECURE_COMMANDS::true"
 
     - name: Build Docker Image
       uses: docker/build-push-action@v2
