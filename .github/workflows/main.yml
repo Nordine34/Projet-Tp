@@ -12,9 +12,8 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set Environment Variables
-      run: |
-        echo "::set-env name=GITHUB_SHA::${{ env.GITHUB_SHA }}"
+    - name: Set Environment Variable
+      run: echo "::set-env name=ACTIONS_ALLOW_UNSECURE_COMMANDS::true"
 
     - name: Build Docker Image
       uses: docker/build-push-action@v2
@@ -22,8 +21,3 @@ jobs:
         context: .
         push: true
         tags: my-image-repository/my-image:${{ env.GITHUB_SHA }}
-        
-    - name: Set Environment Variable
-      run: |
-        echo "::set-env name=ACTIONS_ALLOW_UNSECURE_COMMANDS::true"
-
