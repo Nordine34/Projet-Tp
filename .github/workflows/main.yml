@@ -22,3 +22,8 @@ jobs:
         context: .
         push: true
         tags: my-image-repository/my-image:${{ env.GITHUB_SHA }}
+        
+    - name: Set Environment Variable
+      run: |
+        echo "::set-env name=ACTIONS_ALLOW_UNSECURE_COMMANDS::true"
+
