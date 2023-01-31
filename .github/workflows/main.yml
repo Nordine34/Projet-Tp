@@ -21,3 +21,4 @@ jobs:
         context: .
         push: true
         tags: my-image-repository/my-image:${{ env.GITHUB_SHA }}
+        tags: my-image-repository/my-image:${{ env.GITHUB_SHA }}
