@@ -1,0 +1,170 @@
+openapi: 3.0.3
+info:
+  title: Projet-Tp
+  description: >-
+    Cette API permet de gérer, afficher et consulter des transactions.
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: Nour-Eddine_Zaidi@etu.u-bourgogne.fr
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+servers:
+  - url: localhost:5000
+tags:
+  - name: transaction
+    description: Permet d'afficher les transactions ainsi qu'en ajouter une
+  - name: personne
+    description: Afficher la liste des transactions liées à une personne
+  - name: solde
+    description: Afficher le solde d'un compte
+  - name: csv
+    description: Importer des données depuis un fichier csv
+paths:
+  /transaction:
+    post:
+      tags:
+        - transaction
+      summary: ajouter une transaction
+      description: Permet d'ajouter une transaction
+      parameters:
+        - name: personne1
+          schema:
+            type: integer
+          example: 1
+          in: query
+          description: ID de la personne qui va donner de l'argent
+        - name: personne2
+          schema:
+            type: integer
+          example: 2
+          in: query
+          description: ID de la personne qui va recevoir l'argent
+        - name: temps
+          schema:
+            type: integer
+          in: query
+          description: Heure à laquelle la transaction est enregistrée
+          example: 10
+        - name: somme
+          schema:
+            type: integer
+          in: query
+          description: Somme qui va être créditer à P2 depuis le solde de P1
+          example: 50
+      responses:
+        '200':
+          description: Réussite de la transaction
+          content:
+            application/json:
+              examples:
+                P1 donne à P2 50e a 11h:
+                  value:
+                    P1 a donné 50 euros à P2 à 23 heures.
+        '400':
+          description: Erreur durant la transaction
+    get:
+      tags:
+        - transaction
+      summary: Permet d'afficher les transactions
+      description: Afficher les transactions dans l'ordre chronologique (E2)
+      operationId: display
+      responses:
+        '200':
+          description: Liste des transactions affichée
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+              examples:
+                ListeTransactions:
+                  value: "P1 a donné 1 euros à Pl3 à 4 heures.
+                  P1 a donné 11 euros à P2 à 6 heures.
+                  P2 a donné 19 euros à P3 à 16 heures."
+                  
+        '400':
+          description: Erreur lors de l'affichage
+  /personne:
+    get:
+      tags:
+        - personne
+      summary: Afficher la liste des transactions liées à une personne
+      description: Permet d'afficher les transactions liées à la personne sélectionnée
+      operationId: personne
+      parameters:
+        - name: personne
+          in: query
+          description: ID de la personne qu'on veut sélectionner
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Demande réussi
+          content:
+            application/json:
+              examples:
+                P1 sélectionné:
+                  value: 
+                    P1 a donné 1 euros à P3 à 4 heures, P1 a donné 11 euros à P2 à 7 heures.
+        '400':
+          description: Erreur durant la demande
+  /solde:
+    get:
+      tags:
+        - solde
+      summary: Afficher le solde d'une personne sélectionnée
+      description: Permet d'afficher le solde d'une personne sélectionnée (E4)
+      operationId: solde
+      parameters:
+        - name: personne
+          in: query
+          description: ID de la personne qu'on veut sélectionner
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Demande réussi
+          content:
+            application/json:
+              examples:
+                P1 sélectionné:
+                  value: 
+                    50
+                P2 sélectionné:
+                  value:
+                    60
+                P3 sélectionné:
+                  value:
+                    70
+        '400':
+          description: Erreur durant la demande
+  /csv:
+    get:
+      tags:
+        - csv
+      summary: Importe des données depuis un fichier csv
+      description: Permet d'importer des données depuis un fichier csv
+      operationId: csv
+      responses:
+        '200':
+          description: Liste des transactions affichée
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+              examples:
+                ListeTransactions:
+                  value: "P1 a donné 1 euros à P3 à 00 heures.
+                  P1 a donné 11 euros à P2 à 9 heures.
+                  P2 a donné 19 euros à P3 à 14 heures."
+        '400':
+          description: Erreur lors de l'affichage
